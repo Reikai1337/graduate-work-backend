@@ -2,10 +2,13 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { User } from "./users/user.entity";
+import { UsersModule } from "./users/users.module";
+
 @Module({
   imports: [
+    UsersModule,
     // modules
-    // UsersModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -23,6 +26,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       },
       entities: [
         // tables
+        User,
       ],
       subscribers: [],
       migrations: [],
