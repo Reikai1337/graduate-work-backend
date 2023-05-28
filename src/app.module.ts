@@ -2,13 +2,21 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { AuthModule } from "./auth/auth.module";
+import { ProductType } from "./product-type/product-type.entity";
+import { ProductTypeModule } from "./product-type/product-type.module";
+import { Role } from "./roles/role.entity";
+import { RolesModule } from "./roles/roles.module";
 import { User } from "./users/user.entity";
 import { UsersModule } from "./users/users.module";
 
 @Module({
   imports: [
-    UsersModule,
+    ProductTypeModule,
     // modules
+    UsersModule,
+    RolesModule,
+    AuthModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
@@ -26,7 +34,9 @@ import { UsersModule } from "./users/users.module";
       },
       entities: [
         // tables
+        Role,
         User,
+        ProductType,
       ],
       subscribers: [],
       migrations: [],
