@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/product/product.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("product_type")
 export class ProductType {
@@ -7,4 +8,12 @@ export class ProductType {
 
   @Column("text")
   name: string;
+
+  @Column("boolean", { default: false })
+  isIngredient: boolean;
+
+  @OneToMany(() => Product, (product) => product.type, {
+    onDelete: "CASCADE",
+  })
+  product: Product;
 }

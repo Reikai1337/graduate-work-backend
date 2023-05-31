@@ -1,0 +1,98 @@
+import { Product } from "src/product/product.entity";
+import { Repository } from "typeorm";
+
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+
+import { CreateOrderDto } from "./dto/create-order.dto";
+import { Order } from "./order.entity";
+import { ProductOrder } from "./product-order.entity";
+
+@Injectable()
+export class OrderService {
+  constructor(
+    @InjectRepository(Order)
+    private orderRepository: Repository<Order>,
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
+    @InjectRepository(ProductOrder)
+    private productOrderRepository: Repository<ProductOrder>
+  ) {}
+
+  async getActive() {
+    const res = await this.orderRepository.find({
+      order: {
+        accepted: "ASC",
+      },
+      relations: {
+        productOrders: {
+          product: {
+            type: true,
+          },
+        },
+      },
+    });
+    return res;
+  }
+
+  async create(dto: CreateOrderDto) {
+    const order = await this.orderRepository.save({
+      accepted: false,
+      address: dto.address,
+      lastName: dto.lastName,
+      name: dto.name,
+      phone: dto.phone,
+      totalPrice: dto.totalPrice,
+    });
+
+    const productOrdersPromises = dto.orders.map(async (productOrder) => {
+      const product = await this.productRepository.findOne({
+        where: {
+          id: productOrder.productId,
+        },
+      });
+
+      await this.productOrderRepository.save({
+        order,
+        price: productOrder.price,
+        count: productOrder.count,
+        product,
+      });
+    });
+
+    await Promise.all(productOrdersPromises);
+
+    const res = await this.orderRepository.findOne({
+      where: { id: order.id },
+      relations: {
+        productOrders: {
+          product: {
+            type: true,
+          },
+        },
+      },
+    });
+
+    return res;
+  }
+
+  async updateAccepted(value: boolean, orderId: number) {
+    await this.orderRepository.save({
+      id: orderId,
+      accepted: value,
+    });
+
+    const res = await this.orderRepository.findOne({
+      where: { id: orderId },
+      relations: {
+        productOrders: {
+          product: {
+            type: true,
+          },
+        },
+      },
+    });
+
+    return res;
+  }
+}

@@ -1,9 +1,11 @@
+import { Review } from "src/review/review.entity";
 import { Role } from "src/roles/role.entity";
 import {
   Column,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn
 } from "typeorm";
 
@@ -30,4 +32,7 @@ export class User {
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
   roles: Role[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
 }

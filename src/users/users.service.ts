@@ -25,6 +25,9 @@ export class UsersService {
       where: {
         login,
       },
+      relations: {
+        roles: true,
+      },
     });
 
     if (!user && withError) {
