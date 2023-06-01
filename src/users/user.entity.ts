@@ -1,3 +1,4 @@
+import { Contract } from "src/contract/contract.entity";
 import { Review } from "src/review/review.entity";
 import { Role } from "src/roles/role.entity";
 import {
@@ -35,4 +36,7 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Contract, (contract) => contract.user)
+  contracts: Contract[];
 }

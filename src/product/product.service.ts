@@ -41,6 +41,7 @@ export class ProductService {
 
     return product;
   }
+
   async getAll() {
     const products = await this.productRepository.find({
       order: {

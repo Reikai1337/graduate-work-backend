@@ -1,3 +1,4 @@
+import { Contract } from "src/contract/contract.entity";
 import { Product } from "src/product/product.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -16,4 +17,7 @@ export class ProductType {
     onDelete: "CASCADE",
   })
   product: Product;
+
+  @OneToMany(() => Contract, (contract) => contract.productType)
+  contracts: Contract[];
 }

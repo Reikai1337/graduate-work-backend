@@ -7,6 +7,8 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { AuthModule } from "./auth/auth.module";
+import { Contract } from "./contract/contract.entity";
+import { ContractModule } from "./contract/contract.module";
 import { Image } from "./image/image.entity";
 import { ImageModule } from "./image/image.module";
 import { Order } from "./order/order.entity";
@@ -25,6 +27,7 @@ import { UsersModule } from "./users/users.module";
 
 @Module({
   imports: [
+    ContractModule,
     OrderModule,
     ReviewModule,
     ImageModule,
@@ -64,6 +67,7 @@ import { UsersModule } from "./users/users.module";
         Review,
         Order,
         ProductOrder,
+        Contract,
       ],
       subscribers: [],
       migrations: [],

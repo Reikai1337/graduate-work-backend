@@ -1,5 +1,5 @@
 import { Product } from "src/product/product.entity";
-import { Repository } from "typeorm";
+import { Between, Repository } from "typeorm";
 
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -22,7 +22,7 @@ export class OrderService {
   async getActive() {
     const res = await this.orderRepository.find({
       order: {
-        accepted: "ASC",
+        created_at: "DESC",
       },
       relations: {
         productOrders: {
@@ -84,6 +84,26 @@ export class OrderService {
 
     const res = await this.orderRepository.findOne({
       where: { id: orderId },
+      relations: {
+        productOrders: {
+          product: {
+            type: true,
+          },
+        },
+      },
+    });
+
+    return res;
+  }
+
+  async getOrdersBetween(f: Date, s: Date) {
+    // const currentDate = new Date();
+    // const startOfMonthDate = startOfMonth(currentDate);
+    // const endOfMonthDate = endOfMonth(currentDate);
+    const res = await this.orderRepository.find({
+      where: {
+        created_at: Between(f, s),
+      },
       relations: {
         productOrders: {
           product: {
