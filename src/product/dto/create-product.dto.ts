@@ -12,4 +12,5 @@ export class CreateProductDto {
   boxSize: string;
   storageConditions: string;
   quantityPerBox: number;
+  availableQuantity: number;
 }

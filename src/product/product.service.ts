@@ -36,6 +36,7 @@ export class ProductService {
       package: dto.package,
       quantityPerBox: dto.quantityPerBox,
       storageConditions: dto.storageConditions,
+      availableQuantity: dto.availableQuantity,
       image,
     });
 
@@ -98,6 +99,7 @@ export class ProductService {
       package: dto.package,
       quantityPerBox: dto.quantityPerBox,
       storageConditions: dto.storageConditions,
+      availableQuantity: dto.availableQuantity,
       image,
     });
 

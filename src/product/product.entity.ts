@@ -51,6 +51,9 @@ export class Product {
   @Column({ type: "float", default: 0.0 })
   quantityPerBox: number;
 
+  @Column({ type: "float", default: 0.0 })
+  availableQuantity: number;
+
   @ManyToOne(() => ProductType, (productType) => productType.product, {
     onDelete: "CASCADE",
   })

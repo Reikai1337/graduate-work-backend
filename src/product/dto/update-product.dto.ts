@@ -12,4 +12,5 @@ export class UpdateProductDto {
   boxSize: string;
   storageConditions: string;
   quantityPerBox: number;
+  availableQuantity: number;
 }

@@ -22,6 +22,11 @@ export class OrderController {
     return this.orderService.updateAccepted(dto.value, dto.orderId);
   }
 
+  @Post("rejected")
+  updateRejected(@Body() dto: { value: boolean; orderId: number }) {
+    return this.orderService.updateRejected(dto.value, dto.orderId);
+  }
+
   @Post("between")
   getOrdersBetween(@Body() dto: { f: Date; s: Date }) {
     return this.orderService.getOrdersBetween(dto.f, dto.s);

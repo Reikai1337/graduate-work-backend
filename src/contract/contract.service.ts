@@ -101,4 +101,14 @@ export class ContractService {
       },
     });
   }
+
+  async delete(id: number) {
+    const contract = await this.contractRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return await this.contractRepository.remove(contract);
+  }
 }

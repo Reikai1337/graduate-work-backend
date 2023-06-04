@@ -58,6 +58,11 @@ export class OrderService {
         count: productOrder.count,
         product,
       });
+
+      await this.productRepository.save({
+        id: product.id,
+        availableQuantity: product.availableQuantity - productOrder.count,
+      });
     });
 
     await Promise.all(productOrdersPromises);
@@ -80,6 +85,28 @@ export class OrderService {
     await this.orderRepository.save({
       id: orderId,
       accepted: value,
+      rejected: !value,
+    });
+
+    const res = await this.orderRepository.findOne({
+      where: { id: orderId },
+      relations: {
+        productOrders: {
+          product: {
+            type: true,
+          },
+        },
+      },
+    });
+
+    return res;
+  }
+
+  async updateRejected(value: boolean, orderId: number) {
+    await this.orderRepository.save({
+      id: orderId,
+      rejected: value,
+      accepted: !value,
     });
 
     const res = await this.orderRepository.findOne({
@@ -108,6 +135,7 @@ export class OrderService {
         productOrders: {
           product: {
             type: true,
+            reviews: true,
           },
         },
       },

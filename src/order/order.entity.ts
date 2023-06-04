@@ -23,8 +23,11 @@ export class Order {
   @Column("text")
   phone: string;
 
-  @Column("boolean")
+  @Column("boolean", { default: false })
   accepted: boolean;
+
+  @Column("boolean", { default: false })
+  rejected: boolean;
 
   @Column("text")
   address: string;

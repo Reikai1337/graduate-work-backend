@@ -13,10 +13,9 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle("Pyryatin")
-    .setDescription("Documentation of REST API")
+    .setTitle("Pyryatin REST API")
+    .setDescription("Документація для REST API")
     .setVersion("1.0.0")
-    .addTag("addTag")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
