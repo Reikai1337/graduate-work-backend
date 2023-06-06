@@ -1,7 +1,7 @@
 import { ImageService } from "src/image/image.service";
 import { ProductTypeService } from "src/product-type/product-type.service";
 import { Product } from "src/product/product.entity";
-import { Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -61,6 +61,27 @@ export class ProductService {
   async getById(id: number) {
     const products = await this.productRepository.findOne({
       where: { id },
+      relations: {
+        type: true,
+        image: true,
+        reviews: true,
+      },
+    });
+
+    return products;
+  }
+
+  async findByName(name: string, productType: string) {
+    const products = await this.productRepository.find({
+      where: {
+        name: ILike(`%${name}%`),
+        type: {
+          name: ILike(`%${productType}%`),
+        },
+      },
+      order: {
+        name: "ASC",
+      },
       relations: {
         type: true,
         image: true,
